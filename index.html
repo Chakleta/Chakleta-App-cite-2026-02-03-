@@ -1,66 +1,131 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق چكليته الذكي</title>
+    <title>منصة چكليته - Chakleta</title>
     <style>
-        /* إعادة الواجهة البرتقالية الأصلية */
-        body { 
-            background-color: #FF8C00; 
-            color: white; 
-            text-align: center; 
-            font-family: Arial, sans-serif; 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            height: 100vh; 
+        :root {
+            --choco: #5d4037;
+            --milk: #fff3e0;
+            --strawberry: #ef5350;
+            --leaf: #66bb6a;
         }
-        .icon-box { font-size: 100px; margin-bottom: 20px; }
-        h1 { font-size: 30px; margin-bottom: 10px; }
-        .gps-button { 
-            background-color: #28a745; /* المربع الأخضر */
-            color: white; 
-            border: none; 
-            padding: 20px 40px; 
-            font-size: 20px; 
-            border-radius: 15px; 
-            cursor: pointer; 
+        body {
+            background: var(--milk);
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .app-frame {
+            width: 100%;
+            max-width: 380px;
+            background: white;
+            border: 10px solid var(--choco);
+            border-radius: 50px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .strawberry-brand {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 30px;
+        }
+        .video-container {
+            width: 100%;
+            height: 350px;
+            background: #000;
+            border-radius: 30px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .timer-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--strawberry);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        #status-msg { margin-top: 20px; font-size: 18px; font-weight: bold; }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-gps { background: var(--leaf); color: white; }
+        .btn-personal { background: var(--choco); color: white; }
+        .btn-business { border: 2px solid var(--strawberry); color: var(--strawberry); background: white; }
+        
+        #status {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+            color: var(--choco);
+        }
     </style>
 </head>
 <body>
 
-    <div class="icon-box">🇮🇶</div>
-    <h1>مرحباً بكم في چكليته</h1>
-    <p>منصة التسوق الذكي في العراق</p>
+    <div class="app-frame">
+        <div class="strawberry-brand">🍓</div>
+        <h2 style="text-align: center; color: var(--choco);">چكليته 🇮🇶</h2>
 
-    <button class="gps-button" onclick="activateGps()">تفعيل خاصية الجي بي اس 🛰️</button>
+        <div class="video-container">
+            <div class="timer-badge">ينتهي خلال: 23:59:59</div>
+            <p>فيديو العرض (قريباً)</p>
+        </div>
 
-    <div id="status-msg">اضغط للتفعيل</div>
+        <div class="btn-group">
+            <button class="btn btn-gps" onclick="getLocation()">تفعيل موقعك (GPS) 📍</button>
+            <p id="status">اضغط للتفعيل</p>
+            
+            <hr>
+            
+            <button class="btn btn-personal">دخول كـ حساب شخصي</button>
+            <button class="btn btn-business">دخول كـ حساب تجاري</button>
+        </div>
+    </div>
 
     <script>
-        function activateGps() {
-            var status = document.getElementById('status-msg');
-            status.innerHTML = "جاري الاتصال بالأقمار الصناعية... ⏳";
-            
+        // دمج كود الجي بي اس القديم ليعمل في الواجهة الجديدة
+        function getLocation() {
+            const status = document.getElementById("status");
+            status.innerText = "جاري البحث عن موقعك... ⏳";
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    status.innerHTML = "✅ تم تحديد موقعك بنجاح في چكليته!";
-                    alert("تم الربط بنجاح!");
-                }, function(error) {
-                    status.innerHTML = "❌ خطأ: يرجى تفعيل الموقع في هاتفك.";
-                });
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        status.innerText = "✅ تم تحديد منطقتك بنجاح";
+                        status.style.color = "#4caf50";
+                    },
+                    () => {
+                        status.innerText = "❌ يرجى تفعيل الـ GPS";
+                        status.style.color = "#f44336";
+                    }
+                );
             } else {
-                status.innerHTML = "المتصفح لا يدعم الموقع.";
+                status.innerText = "المتصفح لا يدعم الجي بي اس";
             }
         }
     </script>
-
 </body>
 </html>
