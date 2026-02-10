@@ -4,64 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة چكليته الذكية 🇮🇶</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <title>تطبيق چكليته الذكي</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background-color: #fdf5e6; color: #5d4037; padding: 20px; }
-        .container { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); max-width: 500px; margin: auto; }
-        .flag { font-size: 60px; }
-        h1 { color: #d35400; margin-bottom: 5px; }
-        .btn { background-color: #27ae60; color: white; border: none; padding: 15px 25px; font-size: 18px; border-radius: 30px; cursor: pointer; margin-top: 20px; transition: 0.3s; width: 100%; }
-        .btn:hover { background-color: #219150; transform: scale(1.05); }
-        #map { height: 300px; width: 100%; border-radius: 15px; margin-top: 20px; display: none; border: 2px solid #d35400; }
-        #status { margin-top: 15px; font-weight: bold; }
+        /* إعادة الواجهة البرتقالية الأصلية */
+        body { 
+            background-color: #FF8C00; 
+            color: white; 
+            text-align: center; 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            height: 100vh; 
+        }
+        .icon-box { font-size: 100px; margin-bottom: 20px; }
+        h1 { font-size: 30px; margin-bottom: 10px; }
+        .gps-button { 
+            background-color: #28a745; /* المربع الأخضر */
+            color: white; 
+            border: none; 
+            padding: 20px 40px; 
+            font-size: 20px; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        #status-msg { margin-top: 20px; font-size: 18px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="flag">🇮🇶</div>
-    <h1>منصة چكليته</h1>
-    <p>التسوق الذكي المعتمد على الموقع</p>
-    
-    <button class="btn" onclick="startChakleta()">تفعيل خريطة چكليته 🛰️</button>
-    
-    <div id="status">مرحباً بك! اضغط لتحديد موقعك</div>
-    <div id="map"></div>
-</div>
+    <div class="icon-box">🇮🇶</div>
+    <h1>مرحباً بكم في چكليته</h1>
+    <p>منصة التسوق الذكي في العراق</p>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-    function startChakleta() {
-        const status = document.getElementById('status');
-        const mapDiv = document.getElementById('map');
-        
-        status.innerText = "جاري البحث عن موقعك في العراق...";
-        
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                
-                status.innerHTML = "✅ تم تحديد موقعك! أنت الآن متصل بمنصة چكليته.";
-                status.style.color = "#27ae60";
-                
-                // إظهار الخريطة
-                mapDiv.style.display = "block";
-                var map = L.map('map').setView([lat, lon], 15);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-                L.marker([lat, lon]).addTo(map)
-                    .bindPopup('أنت هنا في چكليته 🍫')
-                    .openPopup();
-                    
-            }, function(error) {
-                status.innerText = "⚠️ يرجى تفعيل الـ GPS وإعطاء الإذن للمتصفح.";
-            });
-        } else {
-            status.innerText = "متصفحك لا يدعم هذه الخاصية.";
+    <button class="gps-button" onclick="activateGps()">تفعيل خاصية الجي بي اس 🛰️</button>
+
+    <div id="status-msg">اضغط للتفعيل</div>
+
+    <script>
+        function activateGps() {
+            var status = document.getElementById('status-msg');
+            status.innerHTML = "جاري الاتصال بالأقمار الصناعية... ⏳";
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    status.innerHTML = "✅ تم تحديد موقعك بنجاح في چكليته!";
+                    alert("تم الربط بنجاح!");
+                }, function(error) {
+                    status.innerHTML = "❌ خطأ: يرجى تفعيل الموقع في هاتفك.";
+                });
+            } else {
+                status.innerHTML = "المتصفح لا يدعم الموقع.";
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
 </html>
