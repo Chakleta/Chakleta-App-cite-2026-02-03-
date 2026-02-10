@@ -3,17 +3,44 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>چكليته - Chakleta Iraq</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة چكليته الذكية | Chakleta 🇮🇶</title>
     <style>
-        body { background-color: #ff9800; color: white; text-align: center; padding: 50px; font-family: Arial, sans-serif; }
-        .card { background: white; color: #333; padding: 30px; border-radius: 20px; }
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
+        .container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #d35400; } /* لون يشبه الشوكولاتة */
+        #status { margin-top: 20px; font-weight: bold; color: #2c3e50; }
+        button { background-color: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>🇮🇶 منصة چكليته العراقيّة 🍫</h1>
-        <p>مرحباً بكم في Chakleta - النسخة العراقية المبتكرة</p>
-        <p>نعمل الآن على ربط خدماتنا بنظام GPS في العراق.</p>
+    <div class="container">
+        <h1>مرحباً بكم في منصة چكليته 🇮🇶</h1>
+        <p>نحن نقوم الآن بربط موقعك لتسهيل عملية التسوق الذكي عبر الـ GPS.</p>
+        
+        <button onclick="getLocation()">تفعيل ربط الـ GPS</button>
+        <p id="status">اضغط على الزر أعلاه لتحديد موقعك</p>
     </div>
+
+    <script>
+        function getLocation() {
+            const status = document.getElementById("status");
+            if (navigator.geolocation) {
+                status.innerHTML = "جاري تحديد موقعك في العراق... ⏳";
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                status.innerHTML = "عذراً، متصفحك لا يدعم خاصية الـ GPS.";
+            }
+        }
+
+        function showPosition(position) {
+            status.innerHTML = "تم الربط بنجاح! ✅<br>خط العرض: " + position.coords.latitude + 
+            "<br>خط الطول: " + position.coords.longitude;
+        }
+
+        function showError(error) {
+            status.innerHTML = "فشل الربط: تأكد من تفعيل الـ GPS في هاتفك.";
+        }
+    </script>
 </body>
 </html>
